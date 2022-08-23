@@ -14,8 +14,8 @@ from metrics import dice_loss, dice_coef, iou
 from train import load_data
 
 """ Global parameters """
-H = 512
-W = 512
+H = 720
+W = 1280
 
 """ Creating a directory """
 def create_dir(path):
@@ -65,11 +65,12 @@ if __name__ == "__main__":
 
         """ Reading the image """
         image = cv2.imread(x, cv2.IMREAD_COLOR)
-        x = image/255.0
+        x = cv2.normalize(x, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
         x = np.expand_dims(x, axis=0)
 
         """ Reading the mask """
         mask = cv2.imread(y, cv2.IMREAD_GRAYSCALE)
+        mask = mask / 255.0
 
         """ Prediction """
         y_pred = model.predict(x)[0]

@@ -26,8 +26,8 @@ def load_data(path, split=0.1):
     return (train_x, train_y), (test_x, test_y)
 
 def augment_data(images, masks, save_path, augment=True):
-    H = 512
-    W = 512
+    H = 720
+    W = 1280
 
     for x, y in tqdm(zip(images, masks), total=len(images)):
         """ Extract the name """

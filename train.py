@@ -14,8 +14,8 @@ from model import deeplabv3_plus
 from metrics import dice_loss, dice_coef, iou
 
 """ Global parameters """
-H = 512
-W = 512
+H = 720
+W = 1280
 
 """ Creating a directory """
 def create_dir(path):
@@ -34,13 +34,14 @@ def load_data(path):
 def read_image(path):
     path = path.decode()
     x = cv2.imread(path, cv2.IMREAD_COLOR)
-    x = x/255.0
+    x = cv2.normalize(x, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
     x = x.astype(np.float32)
     return x
 
 def read_mask(path):
     path = path.decode()
     x = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+    x = x/255.0
     x = x.astype(np.float32)
     x = np.expand_dims(x, axis=-1)
     return x
@@ -74,8 +75,8 @@ if __name__ == "__main__":
 
     """ Hyperparameters """
     batch_size = 2
-    lr = 1e-4
-    num_epochs = 20
+    lr = 1e-6
+    num_epochs = 10
     model_path = os.path.join("files", "model.h5")
     csv_path = os.path.join("files", "data.csv")
 

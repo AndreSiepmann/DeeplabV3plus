@@ -13,8 +13,8 @@ from metrics import dice_loss, dice_coef, iou
 from train import create_dir
 
 """ Global parameters """
-H = 512
-W = 512
+H = 720
+W = 1280
 
 if __name__ == "__main__":
     """ Seeding """
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     tf.random.set_seed(42)
 
     """ Directory for storing files """
-    create_dir("test_images/mask")
+    create_dir("predictions")
 
     """ Loading model """
     with CustomObjectScope({'iou': iou, 'dice_coef': dice_coef, 'dice_loss': dice_loss}):
@@ -39,7 +39,7 @@ if __name__ == "__main__":
         image = cv2.imread(path, cv2.IMREAD_COLOR)
         h, w, _ = image.shape
         x = cv2.resize(image, (W, H))
-        x = x/255.0
+        x = cv2.normalize(x, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
         x = x.astype(np.float32)
         x = np.expand_dims(x, axis=0)
 
